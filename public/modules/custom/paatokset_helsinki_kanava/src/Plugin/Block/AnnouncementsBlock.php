@@ -63,7 +63,7 @@ class AnnouncementsBlock extends BlockBase {
    * Return true if it is less than one day to the next meeting.
    */
   private function shouldShowAlert($time) {
-    return strtotime('+1 day') > strtotime($time);
+    return TRUE;
   }
 
 }
