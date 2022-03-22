@@ -16,6 +16,7 @@
         "drupal/elasticsearch_connector": "^7.0@alpha",
         "drupal/hdbt": "^2.0",
         "drupal/hdbt_admin": "^1.0",
+        "drupal/helfi_drupal_tools": "dev-main",
         "drupal/helfi_hauki": "^1.0",
         "drupal/helfi_platform_config": "^2.0",
         "drupal/helfi_tpr": "^1.0",
@@ -79,6 +80,9 @@
                 "type:drupal-custom-theme"
             ],
             "drush/{$name}": [
+                "type:drupal-drush"
+            ],
+            "drush/Commands/{$name}": [
                 "type:drupal-drush"
             ]
         }

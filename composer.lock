@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "67e50e26f645852a15618866117e37b1",
+    "content-hash": "f93623104ec92400e50f46c51b5d0300",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3908,6 +3908,32 @@
                 "issues": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/issues"
             },
             "time": "2022-01-24T10:34:50+00:00"
+        },
+        {
+            "name": "drupal/helfi_drupal_tools",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/City-of-Helsinki/drupal-tools.git",
+                "reference": "1abc8ebc2f7d389e4ec467b7087f4a4596d7b6cf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-tools/zipball/1abc8ebc2f7d389e4ec467b7087f4a4596d7b6cf",
+                "reference": "1abc8ebc2f7d389e4ec467b7087f4a4596d7b6cf",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "drupal-drush",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Helfi - Drupal tools",
+            "support": {
+                "source": "https://github.com/City-of-Helsinki/drupal-tools/tree/main",
+                "issues": "https://github.com/City-of-Helsinki/drupal-tools/issues"
+            },
+            "time": "2022-04-01T08:23:42+00:00"
         },
         {
             "name": "drupal/helfi_hauki",
@@ -15546,6 +15572,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/elasticsearch_connector": 15,
+        "drupal/helfi_drupal_tools": 20,
         "drupal/json_field": 5
     },
     "prefer-stable": true,
