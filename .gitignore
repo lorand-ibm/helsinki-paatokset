@@ -1,33 +1,23 @@
 # Ignore project files that should not be in version control
 drush/sites/
+drush/Commands/*
 node_modules
 public/core
 public/libraries
 public/modules/contrib
-public/modules/custom/paatokset_search/assets
 public/themes/contrib
 public/sites/default/files
 vendor
-
-# Ignore files that are only for the current local environment
-public/sites/default/local.settings.php
-public/sites/default/local.services.yml
-.env.local
+helfi-test-automation-python/
+public/sites/simpletest/
+public/modules/custom/paatokset_search/assets
 
 # Ignore the folder created by PhpStorm
 .idea/*
+public/sites/default/local.settings.php
 
-# Ignore themes with own git repositories
-public/themes/custom/hdbt*
-# Ignore modules with own repositories
-public/modules/custom/helfi_*
-
-# Ignore test related files
-.phpunit.result.cache
-public/sites/simpletest
-
-# Ignore local database dumps
-dump.sql
+*.sql
+*.env.local
 
 # Ignore OSX generated files
 ._*
@@ -35,3 +25,4 @@ dump.sql
 
 !*.gitkeep
 !*.keepme
+.phpunit.*

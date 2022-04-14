@@ -4,20 +4,26 @@ env:
   SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
   SIMPLETEST_BASE_URL: "http://127.0.0.1:8080"
   SYMFONY_DEPRECATIONS_HELPER: disabled
+  XDEBUG_MODE: off
 jobs:
   tests:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/city-of-helsinki/drupal-php-docker:8.0
+      image: ghcr.io/city-of-helsinki/drupal-php-docker:8.0-alpine
 
     services:
       db:
-        image: druidfi/db:mysql5.7-drupal
+        image: mariadb:10.7
+        env:
+          MYSQL_USER: drupal
+          MYSQL_PASSWORD: drupal
+          MYSQL_DATABASE: drupal
+          MYSQL_ROOT_PASSWORD: drupal
         ports:
           - 3306:3306
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 1
 
@@ -25,13 +31,30 @@ jobs:
         run: composer install
 
       - name: Run PHPCS
-        run: vendor/bin/phpcs public/modules/custom/ --standard=Drupal --extensions=php
+        run: |
+          vendor/bin/phpcs public/modules/custom/ --ignore="*.js,*.css" --standard=Drupal
+          vendor/bin/phpcs public/themes/custom/ --ignore="*.js,*.css" --standard=Drupal
+
+      - name: Download latest dump
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh run download -n latest.sql
 
       - name: Install Drupal
-        run: php -d sendmail_path=$(which true); drush --yes -v site-install --existing-config --db-url="$SIMPLETEST_DB"
+        run: mysql --user=drupal --password=drupal --database=drupal --host=db --port=3306 -A < latest.sql
 
-      - name: Run PHPUnit tests
+      - name: Start services
         run: |
           drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
           chromedriver --port=4444 > /dev/null 2>&1 &
-          vendor/bin/phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist --verbose
+          # Uncomment the line below to run 'existing-site-javascript' tests.
+          # chromium-browser --headless --disable-gpu --remote-debugging-port=9222 &
+          # Wait for drush server to start.
+          for i in {1..5}; do RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$SIMPLETEST_BASE_URL" || true); if [ "$RESPONSE_CODE" -gt "301" ] || [ "$RESPONSE_CODE" -lt "200" ]; then sleep 2; fi; done
+
+      - name: Run PHPUnit tests
+        run: |
+          composer test-php public/modules/custom
+          # Uncomment the line below to run drupal-test-trait tests under tests/src/* folder.
+          # composer test-php tests/
